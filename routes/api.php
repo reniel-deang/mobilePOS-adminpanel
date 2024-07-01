@@ -10,3 +10,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/fetch', [TicketDetailsController::class, 'fetch_company_details']);
+
+Route::post('/auth', [TicketDetailsController::class, 'login']);

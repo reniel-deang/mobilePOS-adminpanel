@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_details', function (Blueprint $table) {
+        Schema::create('mobilepos_configurations', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('toilet_title');
-            $table->string('company_name');
-            $table->string('company_address');
-            $table->string('footer');
+            $table->string('apitime_scheduling');
+            $table->string('parking_rate');
+            $table->string('toilet_rate');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_details');
+        Schema::dropIfExists('mobilepos_configurations');
     }
 };
