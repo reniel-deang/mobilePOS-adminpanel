@@ -27,16 +27,6 @@ class TicketDetailsController extends Controller
 
         return response()->json($data, 200);
 
-        Auth::login();
     }
 
-    public function login(Request $request)
-    {
-        $log_details = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required',
-        ]);
-
-        $user = Auth::attempt($log_details);
-    }
 }
