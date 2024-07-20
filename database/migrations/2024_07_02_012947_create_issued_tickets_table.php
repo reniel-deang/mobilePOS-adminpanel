@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('ticket_number');
             $table->string('plate_number');
             $table->string('time-in');
-            $table->string('time-out');
-            $table->string('hours');
-            $table->string('total');
+            $table->string('time-out')->nullable();
+            $table->string('hours')->nullable();
+            $table->string('total')->nullable();
             $table->string('status');
             $table->timestamps();
         });

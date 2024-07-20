@@ -10,4 +10,5 @@ class issued_tickets extends Model
     use HasFactory;
 
     protected $table = 'issued_tickets';
+    protected $guarded = [];
 }

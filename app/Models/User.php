@@ -17,9 +17,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     //columns you want to fill up. ung mga allowed lang na columns na pedeng lagyan
     protected $fillable = [
-        'name',
+        'username',
         'password',
+        'user_type',
     ];
 
     /**
@@ -27,6 +30,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     //walang makikita pag nirereturn
     protected $hidden = [
         'password',
         'remember_token',
@@ -37,11 +42,21 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+     //kung anong gusto mo na value or datatype ng value ng query . pede mo lagay dito
+     //tingnan mo nalang documentation para sa ibang pede i cast
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password' => 'hashed'
         ];
+    }
+
+    public static function finduser($username)
+    {
+        $user = User::where('username', $username)->first();
+
+        return $user;
     }
 }

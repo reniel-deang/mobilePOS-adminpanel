@@ -1,0 +1,37 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td,
+  th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  .custom-col {
+    border-radius: 10px;
+    /* Adjust the border-radius value for rounded corners */
+    margin-right: 10px;
+    /* Adjust the margin to control spacing between columns */
+  }
+
+  .custom-select {
+    width: 100%;
+    /* Make the select element fill its container */
+    padding: 10px;
+    /* Adjust padding for increased size */
+  }
+
+  .custom-btn {
+    border-radius: 10px;
+    /* Adjust the border-radius value for rounded corners */
+    width: 100%;
+    /* Make the button fill its container */
+  }
