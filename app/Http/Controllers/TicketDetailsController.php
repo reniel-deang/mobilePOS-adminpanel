@@ -17,28 +17,34 @@ class TicketDetailsController extends Controller
 
     public function fetch_company_details(Request $request)
     {
-        //$request->user()->currentAccessToken()->delete();
-
-
-        
+        // Fetch all ticket details
         $fetch = ticket_details::all();
+    
+        // Fetch all pending issued tickets
+        $pending = issued_tickets::where('status', 'pending')->get();
+    
+        // Fetch the settings
         $settings = mobilepos_configuration::select('apitime_scheduling', 'parking_rate', 'toilet_rate')->where('id', 1)->first();
+    
+        // Prepare the response data
         $data = [
-            "status"=> 200,
-            "apitime_sheduling" =>  $settings->pluck('apitime_scheduling'),
+            "status" => 200,
+            "apitime_sheduling" => $settings->pluck('apitime_scheduling'),
             "parking_rate" => $settings->pluck('parking_rate'),
             "toilet_rate" => $settings->pluck('toilet_rate'),
             'details' => $fetch,
+            'pending_data' => $pending,
         ];
-
-        $headers = 
-        [
+    
+        // Define the response headers
+        $headers = [
             'Content-Type' => 'application/json'
         ];
-
+    
+        // Return the response as JSON
         return response()->json($data, 200, $headers);
-
     }
+    
 
     public function update_ticket(Request $request, ticket_details $ticket_details)
     {
@@ -87,43 +93,60 @@ class TicketDetailsController extends Controller
 
     
     public function insert_mobileposdata(Request $request)
-{
-    // Retrieve the data from the request
-    $data = $request->all();
-
-    // Define validation rules
-    $rules = [
-        '*.ticket_number' => 'required|string',
-        '*.plate_number' => 'required|string|max:255',
-        '*.time-in' => 'required|date_format:Y-m-d H:i:s',
-        // '*.time-out' => 'required|date_format:Y-m-d H:i:s|after_or_equal:*.time_in',
-        // '*.hours' => 'required|numeric|min:0',
-        // '*.total' => 'required|numeric|min:0',
-        '*.time-out' => 'nullable',
-        '*.hours' => 'nullable',
-        '*.total' => 'nullable|numeric|min:0',
-        '*.status' => 'required|string|in:paid,unpaid'
-    ];
-
-    // Validate the request data
-    $validator = Validator::make($data, $rules);
-
-    if ($validator->fails()) {
-        // If validation fails, return error response
-        return response()->json(['errors' => $validator->errors()], 422);
+    {
+        // Retrieve the data from the request
+        $data = $request->all();
+    
+        // Define validation rules
+        $rules = [
+            '*.ticket_number' => 'required|string',
+            '*.plate_number' => 'required|string|max:255',
+            '*.time-in' => 'required|date_format:Y-m-d H:i:s',
+            '*.time-out' => 'nullable|date_format:Y-m-d H:i:s|after_or_equal:*.time-in',
+            '*.hours' => 'nullable|numeric|min:0',
+            '*.total' => 'nullable|numeric|min:0',
+            '*.status' => 'required|string|in:paid,pending'
+        ];
+    
+        // Validate the request data
+        $validator = Validator::make($data, $rules);
+    
+        if ($validator->fails()) {
+            // If validation fails, return error response
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
+        $inserted = [];
+        $updated = [];
+    
+        // Insert valid data into the database
+        foreach ($data as $item) {
+            $ticket = issued_tickets::where('ticket_number', $item['ticket_number'])
+                ->where('plate_number', $item['plate_number'])
+                ->where('time-in', $item['time-in'])
+                ->first();
+    
+            if ($ticket) {
+                // Update the existing record
+                $ticket->update($item);
+                $updated[] = $item;
+            } else {
+                // Insert a new record
+                issued_tickets::create($item);
+                $inserted[] = $item;
+            }
+        }
+    
+        // Return success response
+        return response()->json([
+            'message' => 'Data processed successfully',
+            'inserted' => $inserted,
+            'updated' => $updated,
+            'status' => 200
+        ], 200);
     }
+    
 
-    // Insert valid data into the database
-    foreach ($data as $item) {
-        issued_tickets::create($item);
-    }
-
-    // Return success response
-    return response()->json([
-        'message' => 'Data inserted successfully',
-        'status' => '200'
-    ], 200);
-}
 
 public function insert_mobileposdata_toilet(Request $request)
 {
