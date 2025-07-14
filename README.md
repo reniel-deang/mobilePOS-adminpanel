@@ -61,6 +61,7 @@ This admin panel acts as the **central hub** for managing data, configurations, 
 - Mobile app prints receipts using a thermal printer
 - Calculates total charges based on **parking duration**
 - Syncs issued tickets to the web database in real-time or batch
+- https://github.com/reniel-deang/mobilePOS-app
 
 ---
 
@@ -74,7 +75,7 @@ This admin panel acts as the **central hub** for managing data, configurations, 
 
 ## 🔓 Open Source and Copyright Notice
 
-Code Craft is an educational platform built for learning and community engagement. This project makes use of several open-source libraries and tools (such as Laravel, Jitsi Meet, and others) that are respected and acknowledged in their respective licenses. All third-party assets, code, and libraries used are credited to their original authors and are used under their corresponding open-source licenses.
+MobilePOS Admin Panel. This project makes use of several open-source libraries and tools that are respected and acknowledged in their respective licenses. All third-party assets, code, and libraries used are credited to their original authors and are used under their corresponding open-source licenses.
 
 This project is intended for non-commercial, educational, and developmental use only. If you plan to reuse or distribute any part of this platform, please ensure compliance with the licenses of the included open-source components. We encourage learning, collaboration, and open innovation while respecting the intellectual property of contributors across the open-source community.
 
